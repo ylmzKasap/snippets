@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'MyFont';
+  src: url('./tckt.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+.hello {
+  color: red;
+  font-family: 'MyFont';
+  font-size: 200%;
+  padding: 3%;
+  background: url('./icon.png');
+}
