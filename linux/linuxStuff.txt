@@ -1,0 +1,43 @@
+Install Chrome:
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo apt install ./google-chrome-stable_current_amd64.deb
+rm google-chrome-stable_current_amd64.deb
+
+Python
+sudo apt install python3 pip3
+sudo apt-get install idle3
+
+Git setup
+sudo add-apt-repository ppa:git-core/ppa
+sudo apt update
+sudo apt install git
+
+Create a personal access token from github.
+
+git config --global credential.helper cache
+
+push something and enter:
+username <github username>
+password <access token>
+
+Before changing the credentials:
+git config --global --unset credential.helper
+
+
+Postgres
+sudo apt-get instal postgresql
+sudo -i -u postgres
+psql
+CREATE USER hal_9001 WITH PASSWORD '<pw>';
+ALTER USER hal_9001 WITH SUPERUSER;
+CREATE DATABASE folder_test WITH OWNER = hal_9001;
+
+
+
+Useful Stuff
+xdg-open <thing> (open file with text editor.)
+
+Other Installs
+sudo apt install htop (task manager)
+
+

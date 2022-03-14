@@ -1,14 +1,14 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   mode: 'development',
   entry: {
-    index: './src/index.js',
-    styles: './src/index.css'
+    index: './src/index.js'
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: 'bundle.js',
     path: path.join(__dirname, 'dist'),
     clean: true, // Delete useless stuff in dist.
   },
@@ -20,13 +20,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Development',
     }),
+    new BundleAnalyzerPlugin(),
   ],
-  module: {
-    rules: [
-      {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
-      }
-    ],
-  }
+  optimization: {
+    usedExports: true,
+  },
 };
