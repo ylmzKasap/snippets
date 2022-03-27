@@ -1,0 +1,55 @@
+.drag-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  align-items: flex-start;
+  column-gap: 2%;
+  height: 100%;
+  width: 100%;
+}
+
+.drag-group {
+  color: white;
+  background-color: gray;
+  padding: 3%;
+  display: grid;
+  align-content: flex-start;
+  height: auto;
+  width: 300px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.drag-item-container {
+  flex-direction: column;
+}
+
+.drag-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e6962f;
+  height: 70px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.drag-filler {
+  height: 15px;
+  width: 100%;
+  background-color: gray;
+}
+
+.drag-item-clone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #8e2fe6;
+  background-color: #e6962f;
+  color: white;
+  font-size: 1.4rem;
+  position: fixed;
+  width: 282px;
+  height: 70px;
+  cursor: pointer;
+}

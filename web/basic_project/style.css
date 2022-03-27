@@ -1,0 +1,22 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    display: flex;
+    width: 70%;
+    height: 100px;
+    background-color: black;
+    color: orange;
+    box-shadow: -3px 2px 5px gray;
+    justify-content: center;
+    align-items: center;
+}
