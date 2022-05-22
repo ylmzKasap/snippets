@@ -1,0 +1,80 @@
+@mixin center-it {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+html, body, #app, #appContent {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    font-family: Cambria, Georgia, Times, 'Times New Roman', serif;
+}
+
+#appContent {
+    display: flex;
+    flex-basis: 100%;
+}
+
+#currentDemo {
+    height: 10%;
+    width: 100%;
+    background-color: black;
+    color: white;
+    font-size: 1.6rem;
+    @include center-it();
+}
+
+#buttonContainer {
+    height: 100%;
+    width: 100%;
+    flex-shrink: 4;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border: solid white;
+    border-width: 0 2px 0 0;
+}
+
+#demo {
+    height: 100%;
+    width: 100%;
+    flex-shrink: 1;
+    margin: 0;
+}
+
+.demoContent {
+    height: calc(100% - 10vh);
+    width: 100%;
+    display: grid;
+    place-items: center;
+    background-color: beige;
+}
+
+.description {
+    height: calc(10vh - 20px);
+    padding: 10px;
+    border: solid white;
+    border-width: 0 0 2px 0;
+    font-size: 1.2rem;
+    text-align: center;
+    @include center-it();
+}
+
+.nav-button {
+    &:first-of-type {
+        margin-top: 5px;
+    }
+    width: 100%;
+    height: 40px;
+    cursor: pointer;
+    margin-bottom: 1px;
+    font-weight: bold;
+    background-color: rgb(13, 65, 169);
+    color: white;
+    &:hover {
+        background-color: rgb(92, 106, 233);
+    }
+    &:active {
+        background-color:rgb(123, 132, 215);
+    }
+}
