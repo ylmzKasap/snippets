@@ -13,10 +13,13 @@ export const CallbackComponent = () => {
     const handleNumber = (event) => {
         const maxRange = 999999999999;
         if (!event.target.value) {
-            return '';}
-        if (Math.abs(parseInt(event.target.value)) > maxRange) {
-            return parseInt(event.target.value) > 0 ? maxRange : -maxRange;}
-        return (parseInt(event.target.value))
+            return '';
+        }
+        const newNumber = parseInt(event.target.value);
+        if (Math.abs(newNumber) > maxRange) {
+            return newNumber > 0 ? maxRange : -maxRange;
+        }
+        return newNumber
     }
 
     const theme = {

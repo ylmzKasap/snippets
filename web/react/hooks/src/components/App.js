@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
-import { EffectComponent } from './UseEffect';
-import { ReducerComponent } from './UseReducer';
-import { CallbackComponent } from './UseCallback';
-import { MemoComponent } from './UseMemo';
-import { RefComponent, RefComponentTwo } from './UseRef';
-import { CustomHook } from './CustomHook';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 
-const App = () => {
-    const [currentDemo, setCurrentDemo] = useState('useEffect');
+const App = (props) => {
+    const [currentDemo, setCurrentDemo] = useState('');
+    const navigate = useNavigate();
+    const url = useLocation();
+
     const allButtons = [
       'useEffect', 'useReducer', 'useCallback', 'useMemo', 'useRef', 'customHook'];
+
+    useEffect(() => {
+      const currentHook = url.pathname.replace('/', '');
+      if (allButtons.includes(currentHook)) {
+        setCurrentDemo(currentHook);
+      }
+    }, [url.pathname]);
 
     return (
       <div id="appContent">
@@ -18,18 +23,13 @@ const App = () => {
             .map(demo => <button 
               className="nav-button" 
               key={demo}
-              onClick={() => setCurrentDemo(demo)}>{demo}</button>)
+              onClick={() => navigate(`/${demo}`)}>{demo}</button>)
           }
         </div>
         <div id="demo">
           <div id='currentDemo'>{currentDemo}</div>
           <div className='demoContent'>
-            { currentDemo === 'useEffect' && <EffectComponent /> }
-            { currentDemo === 'useReducer' && <ReducerComponent /> }
-            { currentDemo === 'useCallback' && <CallbackComponent /> }
-            { currentDemo === 'useMemo' && <MemoComponent /> }
-            { currentDemo === 'useRef' && <div><RefComponent /> <RefComponentTwo /></div> }
-            { currentDemo === 'customHook' && <CustomHook /> }
+            <Outlet />
           </div>
         </div>
       </div>

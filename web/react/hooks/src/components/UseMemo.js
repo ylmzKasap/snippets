@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 export function MemoComponent() {
     const [number, setNumber] = useState(0);
     const [dark, setDark] = useState(false);
+    
     const doubleNumber = useMemo(() => {
         return slowFunction(number);
     }, [number]);
