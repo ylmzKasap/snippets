@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders and . . . Matches the snapshot 1`] = `
+<div>
+  <div
+    id="appContent"
+  >
+    <div
+      id="buttonContainer"
+    >
+      <div
+        class="description"
+      >
+        Other Hooks
+      </div>
+      <button
+        class="nav-button"
+      >
+        useEffect
+      </button>
+      <button
+        class="nav-button"
+      >
+        useReducer
+      </button>
+      <button
+        class="nav-button"
+      >
+        useCallback
+      </button>
+      <button
+        class="nav-button"
+      >
+        useMemo
+      </button>
+      <button
+        class="nav-button"
+      >
+        useRef
+      </button>
+      <button
+        class="nav-button"
+      >
+        customHook
+      </button>
+    </div>
+    <div
+      id="demo"
+    >
+      <div
+        id="currentDemo"
+      />
+      <div
+        class="demoContent"
+      />
+    </div>
+  </div>
+</div>
+`;

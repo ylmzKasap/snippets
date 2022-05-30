@@ -13,8 +13,6 @@ const App = (props) => {
       const currentHook = url.pathname.replace('/', '');
       if (allButtons.includes(currentHook)) {
         setCurrentDemo(currentHook);
-      } else {
-        setCurrentDemo('');
       }
     }, [url.pathname]);
 
