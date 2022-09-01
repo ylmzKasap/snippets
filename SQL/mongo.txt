@@ -1,0 +1,69 @@
+COMMANDS
+    Log in:
+        mongosh "mongodb+srv://sandbox.ovvnhvg.mongodb.net/<database name>" --username <username>
+
+    Show all databases:
+        show dbs
+
+    Select a specific database:
+        use <database>
+
+    Show all collections in a database:
+        show collections
+
+QUERIES
+    FIND
+        Get all matching documents in <collection>:
+            db.<collection>.find({"state": "NY"})
+        
+        Get all matching documents from multiple fields:
+            db.<collection>.find({"_id": 1, "sandwich": 1})
+
+        Get one random document from <collection>:
+            db.<collection>.findOne()
+
+    INSERT
+        Insert a single document:
+            db.<collection>.insert({ "sandwich": 1 })
+        
+        Insert multiple documents:
+            db.<collection>.insert([{ "_id": 1, "sandwich": 1 }, {"_id": 2, "sandwich": 5}, {"_id": 3, "sandwich": 1}])
+
+        Insert multiple documents with no order:
+            db.<collection>.insert([{ "_id": 4, "sandwich": 1 }, {"_id": 4, "sandwich": 5}, {"_id": 5, "sandwich": 1}], {"ordered": false})
+
+    UPDATE
+        Update a single value with $set:
+            db.<collection>.updateOne({ "zip": "12534" }, { "$set": { "pop": 17630 } })
+
+        Update multiple values with $inc:
+            db.<collection>.updateMany({ "city": "HUDSON" }, { "$inc": { "pop": 10 } })
+
+        Update a single value with $push:
+            (Creates or modifies an array)
+            db.<collection>.updateOne({ "zip": "12534" }, { "$push": { "planet": "earth"}})
+    
+    DELETE
+        Delete a single value:
+            db.<collection>.deleteOne({ "_id": 1 })
+
+        Delete multiple values:
+            db.<collection>.deleteMany({ "sandwich": 1 })
+
+FUNCTIONS
+    Return number of matching documents:
+        db.<collection>.find({"state": "NY"}).count()
+
+    Print the output prettier:
+        db.<collection>.find({"state": "NY"}).pretty()
+
+    Drop collection:
+        db.<collection>.drop()
+
+GOTCHAS
+    INSERT
+        1) While inserting, using {"ordered": false} prevents the query from stopping in case of a duplicate error.
+        2) Inserting into a non-existing collection creates a new collection with that name.
+    
+    UPDATE
+        1) While updating a document, setting a specific field to a new value will implicitly create that field if it doesn't exist.

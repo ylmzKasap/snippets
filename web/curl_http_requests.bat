@@ -5,7 +5,7 @@ curl -X GET "http://192.168.1.34:3000/u/hayri" -m 30 -v em
 
 &:: Post Request with Body
 
-curl -X POST http://192.168.1.34:3000/u/hayri/create_folder -H "Content-Type: application/json" -d "{\"folder_name\": \"haha yes\", \"parent_id\": 1}"
+curl -X POST https://quideck.herokuapp.com/create_folder/hayri -H "Content-Type: application/json" -d "{\"folder_name\": \"hahaaaa yes\", \"parent_id\": 3, \"folder_type\": \"regular_folder\"}"
 
 
 &:: Put Request with Body
