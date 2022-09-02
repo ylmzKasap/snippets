@@ -1,6 +1,6 @@
 COMMANDS
     Log in:
-        mongosh "mongodb+srv://sandbox.ovvnhvg.mongodb.net/<database name>" --username <username>
+        mongosh "mongodb+srv://sandbox.ovvnhvg.mongodb.net/<database name>" --apiVersion 1 --username mongo_learner
 
     Show all databases:
         show dbs
@@ -44,11 +44,38 @@ QUERIES
             db.<collection>.updateOne({ "zip": "12534" }, { "$push": { "planet": "earth"}})
     
     DELETE
-        Delete a single value:
+        Delete a single document:
             db.<collection>.deleteOne({ "_id": 1 })
 
-        Delete multiple values:
+        Delete multiple documents:
             db.<collection>.deleteMany({ "sandwich": 1 })
+
+        Delete a single field with $unset:
+            db.<collection>.updateOne({"student_id": 6, "class_id": 262}, {"$unset": {"class_id": ""}})
+
+
+OPERATORS
+    Equal to (=) operator:
+        db.<collection>.find({ "tripduration": { "$eq" : 326222 }})
+
+        (This operator is impelented by default when no other operator is used)
+        db.<collection>.find({ "tripduration": 326222})
+
+    Not equal to (!=) operator:
+        db.<collection>.find({ "birth year": 1975, "tripduration": {"$ne": 440}})
+
+    Less than (<) operator:
+        db.<collection>.find({ "tripduration": { "$lt" : 62 }})
+
+    Less than or equal (<=) operator:
+        db.<collection>.find({ "tripduration": { "$lte" : 61 }})
+    
+    Greater than (>) operator:
+        db.<collection>.find({ "tripduration": { "$gt" : 326221 }})
+    
+    Greater than or equal (>=) operator:
+        db.<collection>.find({ "tripduration": { "$gte" : 326222 }})
+
 
 FUNCTIONS
     Return number of matching documents:
