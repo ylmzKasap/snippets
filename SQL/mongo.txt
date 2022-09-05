@@ -1,6 +1,6 @@
 COMMANDS
     Log in:
-        mongosh "mongodb+srv://sandbox.ovvnhvg.mongodb.net/<database name>" --apiVersion 1 --username mongo_learner
+        mongosh "mongodb+srv://sandbox.ovvnhvg.mongodb.net/<database name>" --apiVersion 1 --username <username>
 
     Show all databases:
         show dbs
@@ -13,14 +13,26 @@ COMMANDS
 
 QUERIES
     FIND
-        Get all matching documents in <collection>:
-            db.<collection>.find({"state": "NY"})
+        find() : 
+            Get all matching documents in <collection>:
+                db.<collection>.find({"state": "NY"})
         
-        Get all matching documents from multiple fields:
-            db.<collection>.find({"_id": 1, "sandwich": 1})
+            Get all matching documents from multiple fields:
+                db.<collection>.find({"_id": 1, "sandwich": 1})
 
-        Get one random document from <collection>:
-            db.<collection>.findOne()
+            Only get specific fields with projection:
+                db.<collection>.find({}, {"twitter_username": 1})
+
+            Exclude some fields with projection:
+                db.<collection>.find({}, {_id: 0, tripduration: 0})
+
+            $elemMatch (projection):
+                Get all documents where the value of the score field is greater than 85 in scores array:
+                    db.<collection>.find({ "class_id": 431 }, {"scores": { "$elemMatch": { "score": { "$gt": 85 } } } })
+
+        findOne() : 
+            Get one random document from <collection>:
+                db.<collection>.findOne()
 
     INSERT
         Insert a single document:
@@ -33,64 +45,141 @@ QUERIES
             db.<collection>.insert([{ "_id": 4, "sandwich": 1 }, {"_id": 4, "sandwich": 5}, {"_id": 5, "sandwich": 1}], {"ordered": false})
 
     UPDATE
-        Update a single value with $set:
-            db.<collection>.updateOne({ "zip": "12534" }, { "$set": { "pop": 17630 } })
+        $set : 
+            Update a single value:
+                db.<collection>.updateOne({ "zip": "12534" }, { "$set": { "pop": 17630 } })
 
-        Update multiple values with $inc:
-            db.<collection>.updateMany({ "city": "HUDSON" }, { "$inc": { "pop": 10 } })
+        $inc : 
+            Update multiple values:
+                db.<collection>.updateMany({ "city": "HUDSON" }, { "$inc": { "pop": 10 } })
 
-        Update a single value with $push:
-            (Creates or modifies an array)
-            db.<collection>.updateOne({ "zip": "12534" }, { "$push": { "planet": "earth"}})
+        $push :
+            Update a single value:
+                (Creates or modifies an array)
+                db.<collection>.updateOne({ "zip": "12534" }, { "$push": { "planet": "earth"}})
     
     DELETE
-        Delete a single document:
-            db.<collection>.deleteOne({ "_id": 1 })
+        deleteOne() :
+            Delete a single document:
+                db.<collection>.deleteOne({ "_id": 1 })
 
-        Delete multiple documents:
-            db.<collection>.deleteMany({ "sandwich": 1 })
+        deleteMany() :
+            Delete multiple documents:
+                db.<collection>.deleteMany({ "sandwich": 1 })
 
-        Delete a single field with $unset:
-            db.<collection>.updateOne({"student_id": 6, "class_id": 262}, {"$unset": {"class_id": ""}})
+        $unset :
+            Delete a single field:
+                db.<collection>.updateOne({"student_id": 6, "class_id": 262}, {"$unset": {"class_id": ""}})
 
 
 OPERATORS
-    Equal to (=) operator:
-        db.<collection>.find({ "tripduration": { "$eq" : 326222 }})
+    COMPARISON OPERATORS
+        $eq : 
+            Equal to (=) operator:
+                db.<collection>.find({ "tripduration": { "$eq" : 326222 }})
 
-        (This operator is impelented by default when no other operator is used)
-        db.<collection>.find({ "tripduration": 326222})
+            This operator is impelented by default when no other operator is used
+                db.<collection>.find({ "tripduration": 326222 })
 
-    Not equal to (!=) operator:
-        db.<collection>.find({ "birth year": 1975, "tripduration": {"$ne": 440}})
+        $ne : 
+            Not equal to (!=) operator:
+                db.<collection>.find({ "birth year": 1975, "tripduration": {"$ne": 440}})
 
-    Less than (<) operator:
-        db.<collection>.find({ "tripduration": { "$lt" : 62 }})
+        $lt : 
+            Less than (<) operator:
+                db.<collection>.find({ "tripduration": { "$lt" : 62 }})
 
-    Less than or equal (<=) operator:
-        db.<collection>.find({ "tripduration": { "$lte" : 61 }})
-    
-    Greater than (>) operator:
-        db.<collection>.find({ "tripduration": { "$gt" : 326221 }})
-    
-    Greater than or equal (>=) operator:
-        db.<collection>.find({ "tripduration": { "$gte" : 326222 }})
+        $lte :
+            Less than or equal (<=) operator:
+                db.<collection>.find({ "tripduration": { "$lte" : 61 }})
+        
+        $gt :
+            Greater than (>) operator:
+                db.<collection>.find({ "tripduration": { "$gt" : 326221 }})
+        
+        $gte :
+            Greater than or equal (>=) operator:
+                db.<collection>.find({ "tripduration": { "$gte" : 326222 }})
 
+        Two comparison operators can be used in the same query:
+            db.<collection>.find({ "pop": { "$gte": 5000, "$lte": 1000000 }})
+
+    LOGIC OPERATORS
+        $or:
+            db.<collection>.find({ "$or" : [{ "dst_airport": "KZN" }, { "src_airport": "KZN" }] })
+        $and:
+            db.<collection>.find({ "$and" : [{ "dst_airport": "KZN" }, { "src_airport": "DWC" }] })
+        $not:
+            db.<collection>.find({"tripduration": {"$not": {"$gt": 70}}})
+        $nor:
+            (Get all documents where 'birth year' is not greater than 1952 and not empty )
+            db.<collection>.find({"$nor": [{"birth year": "$gt": 1952}, {"birth year": ""}]})
+
+        Two operators can be chained together:
+            db.<collection>.find({ "$and": [
+                { "$or" : 
+                    [{ "dst_airport": "KZN" }, { "src_airport": "KZN" }] },
+                { "$or" : 
+                    [{ "airplane": "CR2" }, { "airplane": "A81" }
+                ] }
+            ]})
+
+    EXPRESSIVE QUERY OPERATOR:
+        $expr: 
+            Get all documents where "end station id" is equal to "start station id":
+                db.<collection>.find({ "$expr": { "$eq": [ "$end station id", "$start station id"] }})
+
+            Get all documents where trip duration is greater than 1200 and "end station id" is equal to "start station id":
+                db.<collection>.find({ "$expr": 
+                    { "$and": [ 
+                        { "$gt": [ "$tripduration", 1200 ]},
+                        { "$eq": [ "$end station id", "$start station id" ]}
+                    ]}
+                })
+                Example above uses aggregation and syntax is slightly different:
+                    { "$gt": [ "$tripduration", 1200 ]} instead of { "tripduration": {"$gt": 1200 }}
+
+    ARRAY OPERATORS
+        $size: 
+            Get the documents where "amenities" array has 30 items:
+                db.<collection>.find({ "amenities": { "$size": 30}})
+
+        $all:
+            Get the documents where "amenities" array has at least the following items:
+                db.<collection>.find({ "amenities": {"$all": ["TV", "Internet", "Shampoo", "Iron"]}})
+
+        $elemMatch:
+            Get the documents where at least one object in offices array has the following field & value pair. 
+                db.companies.find({"offices": {"$elemMatch": {"city": "Seattle"}}})
+        
 
 FUNCTIONS
-    Return number of matching documents:
-        db.<collection>.find({"state": "NY"}).count()
+    count() :
+        Return number of matching documents:
+            db.<collection>.find({"state": "NY"}).count()
 
-    Print the output prettier:
-        db.<collection>.find({"state": "NY"}).pretty()
+    pretty() :
+        Print the output prettier:
+            db.<collection>.find({"state": "NY"}).pretty()
 
-    Drop collection:
-        db.<collection>.drop()
+    drop() :
+        Drop collection:
+            db.<collection>.drop()
+
+    limit() :
+        Limit number of documents returned from the query:
+            db.<collection>.find({"state": "NY"}).limit(2)
 
 GOTCHAS
+    FIND
+        1) While using projection to filter out fields, you cannot mix inclusion and exclusion except for "_id" field.
+
     INSERT
         1) While inserting, using {"ordered": false} prevents the query from stopping in case of a duplicate error.
         2) Inserting into a non-existing collection creates a new collection with that name.
     
     UPDATE
         1) While updating a document, setting a specific field to a new value will implicitly create that field if it doesn't exist.
+
+    ARRAY
+        1) Querying an array field with square brackets will look for a full match where the order matters.
