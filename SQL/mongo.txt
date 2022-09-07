@@ -34,6 +34,17 @@ QUERIES
             Get one random document from <collection>:
                 db.<collection>.findOne()
 
+        $regex :
+            Find the documents that have the matching string within the specified field:
+                db.<collection>.find({"end station name": {"$regex": "Park"}})
+
+        Dot notation:
+            Using dot notation to find nested values:
+                db.trips.findOne({ "start station location.type": "Point" })
+            
+            Using index values to get specific array values:
+                db.companies.find({ "relationships.0.person.last_name": "Zuckerberg" }, { "name": 1 })
+
     INSERT
         Insert a single document:
             db.<collection>.insert({ "sandwich": 1 })
@@ -41,7 +52,7 @@ QUERIES
         Insert multiple documents:
             db.<collection>.insert([{ "_id": 1, "sandwich": 1 }, {"_id": 2, "sandwich": 5}, {"_id": 3, "sandwich": 1}])
 
-        Insert multiple documents with no order:
+        Insert multiple documents with no orde
             db.<collection>.insert([{ "_id": 4, "sandwich": 1 }, {"_id": 4, "sandwich": 5}, {"_id": 5, "sandwich": 1}], {"ordered": false})
 
     UPDATE
@@ -152,8 +163,7 @@ OPERATORS
             Get the documents where at least one object in offices array has the following field & value pair. 
                 db.companies.find({"offices": {"$elemMatch": {"city": "Seattle"}}})
         
-
-FUNCTIONS
+CURSOR METHODS
     count() :
         Return number of matching documents:
             db.<collection>.find({"state": "NY"}).count()
@@ -169,6 +179,43 @@ FUNCTIONS
     limit() :
         Limit number of documents returned from the query:
             db.<collection>.find({"state": "NY"}).limit(2)
+
+    sort() :
+        Sort in ascending order:
+            db.<collection>.find().sort({ "pop": 1 }).limit(5)
+
+        Sort in descending order:
+            db.<collection>.find().sort({ "pop": -1 }).limit(10)
+
+
+AGGREGATION
+    Difference between aggregation framework and mql:
+        Regular MQL query:
+            db.<collection>.find(
+                { "amenities": "Wifi" },
+                { "price": 1, "address": 1, "_id": 0 }
+            )
+
+        Aggregation query with $match and $project:
+            db.<collection>.aggregate([
+                { "$match": { "amenities": "Wifi" } },
+                { "$project": { "price": 1, "address": 1, "_id": 0 }}
+            ])
+
+    $group :
+        db.listingsAndReviews.aggregate([ 
+            { "$project": { "address": 1, "_id": 0 }},
+            { "$group": { "_id": "$address.country" }}
+        ])
+
+    $sum : 
+        db.listingsAndReviews.aggregate([
+            { "$project": { "address": 1, "_id": 0 }},
+            { "$group": { "_id": "$address.country", "count": { "$sum": 1 } }}
+        ])
+
+INDEXES
+    db.<collection>.createIndex({ "start station id": 1, "birth year": 1 })
 
 GOTCHAS
     FIND
